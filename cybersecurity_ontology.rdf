@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:cysec="http://rgu.ac.uk/cm2602/cybersecurity_ontology#">
+  <owl:Ontology rdf:about="http://rgu.ac.uk/cm2602/cybersecurity_ontology"/>
+
+  <!-- Classes -->
+  <owl:Class rdf:ID="Cybersecurity"/>
+
+  <owl:Class rdf:ID="CyberThreat">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="Vulnerability">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="AttackVector">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="IncidentResponse">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="SecurityControl">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="ComplianceStandard">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="TrainingProgram">
+    <rdfs:subClassOf rdf:resource="#Cybersecurity"/>
+  </owl:Class>
+
+  <!-- Object Properties -->
+  <owl:ObjectProperty rdf:ID="exploits">
+    <rdfs:domain rdf:resource="#CyberThreat"/>
+    <rdfs:range rdf:resource="#Vulnerability"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="mitigates">
+    <rdfs:domain rdf:resource="#SecurityControl"/>
+    <rdfs:range rdf:resource="#Vulnerability"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="uses">
+    <rdfs:domain rdf:resource="#CyberThreat"/>
+    <rdfs:range rdf:resource="#AttackVector"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="respondsTo">
+    <rdfs:domain rdf:resource="#IncidentResponse"/>
+    <rdfs:range rdf:resource="#CyberThreat"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="compliesWith">
+    <rdfs:domain rdf:resource="#SecurityControl"/>
+    <rdfs:range rdf:resource="#ComplianceStandard"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="trainsFor">
+    <rdfs:domain rdf:resource="#TrainingProgram"/>
+    <rdfs:range rdf:resource="#CyberThreat"/>
+  </owl:ObjectProperty>
+
+  <!-- Data Properties -->
+  <owl:DatatypeProperty rdf:ID="hasDescription">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasSeverity">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:comment>Severity score from 1 (Low) to 5 (Critical)</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:ID="hasCVE">
+    <rdfs:domain rdf:resource="#Vulnerability"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+
+  <!-- Individuals -->
+  <!-- CyberThreat -->
+  <owl:NamedIndividual rdf:ID="Malware">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>General category of malicious software</cysec:hasDescription>
+    <cysec:exploits rdf:resource="#WeakPassword"/>
+    <cysec:uses rdf:resource="#Email"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SocialEngineeringThreat">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>General category of social engineering attacks</cysec:hasDescription>
+    <cysec:uses rdf:resource="#SocialEngineering"/>
+    <cysec:exploits rdf:resource="#SocialEngineeringVuln"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Ransomware">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>Encrypts data for ransom</cysec:hasDescription>
+    <cysec:exploits rdf:resource="#WeakPassword"/>
+    <cysec:uses rdf:resource="#Email"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Phishing">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>Steals credentials via fraud</cysec:hasDescription>
+    <cysec:uses rdf:resource="#Email"/>
+    <cysec:exploits rdf:resource="#SocialEngineeringVuln"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="DDoS">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>Overwhelms resources</cysec:hasDescription>
+    <cysec:uses rdf:resource="#Network"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Spyware">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>Monitors user activity</cysec:hasDescription>
+    <cysec:uses rdf:resource="#USB"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Trojan">
+    <rdf:type rdf:resource="#CyberThreat"/>
+    <cysec:hasDescription>Disguised malicious software</cysec:hasDescription>
+    <cysec:uses rdf:resource="#WebApp"/>
+  </owl:NamedIndividual>
+
+  <!-- Vulnerability -->
+  <owl:NamedIndividual rdf:ID="BufferOverflow">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</cysec:hasSeverity>
+    <cysec:hasCVE>CVE-2023-12345</cysec:hasCVE>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SQLInjection">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">5</cysec:hasSeverity>
+    <cysec:hasCVE>CVE-2023-67890</cysec:hasCVE>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="WeakPassword">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</cysec:hasSeverity>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="XSS">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</cysec:hasSeverity>
+    <cysec:hasCVE>CVE-2023-11223</cysec:hasCVE>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SocialEngineeringVuln">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</cysec:hasSeverity>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="CSRF">
+    <rdf:type rdf:resource="#Vulnerability"/>
+    <cysec:hasSeverity rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</cysec:hasSeverity>
+    <cysec:hasCVE>CVE-2023-44556</cysec:hasCVE>
+  </owl:NamedIndividual>
+
+  <!-- AttackVector -->
+  <owl:NamedIndividual rdf:ID="Email">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="WebApp">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="USB">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Network">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SocialEngineering">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="IoTDevice">
+    <rdf:type rdf:resource="#AttackVector"/>
+  </owl:NamedIndividual>
+
+  <!-- IncidentResponse -->
+  <owl:NamedIndividual rdf:ID="DetectPhishing">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#Phishing"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="MitigateRansomware">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#Ransomware"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="IsolateDDoS">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#DDoS"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="PatchSQLInjection">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#SQLInjection"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="EducateUsers">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#Phishing"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="ContainSpyware">
+    <rdf:type rdf:resource="#IncidentResponse"/>
+    <cysec:respondsTo rdf:resource="#Spyware"/>
+  </owl:NamedIndividual>
+
+  <!-- SecurityControl -->
+  <owl:NamedIndividual rdf:ID="Firewall">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#SQLInjection"/>
+    <cysec:compliesWith rdf:resource="#ISO27001"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Encryption">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#WeakPassword"/>
+    <cysec:compliesWith rdf:resource="#GDPR"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="IDS">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#DDoS"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="Antivirus">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#Trojan"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="MFA">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#WeakPassword"/>
+    <cysec:compliesWith rdf:resource="#NIST"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SIEM">
+    <rdf:type rdf:resource="#SecurityControl"/>
+    <cysec:mitigates rdf:resource="#DDoS"/>
+    <cysec:compliesWith rdf:resource="#SOC2"/>
+  </owl:NamedIndividual>
+
+  <!-- ComplianceStandard -->
+  <owl:NamedIndividual rdf:ID="ISO27001">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Information security management standard</cysec:hasDescription>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="GDPR">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Data protection regulation</cysec:hasDescription>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="NIST">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Cybersecurity framework</cysec:hasDescription>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="PCI_DSS">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Payment card security standard</cysec:hasDescription>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="HIPAA">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Healthcare data protection</cysec:hasDescription>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SOC2">
+    <rdf:type rdf:resource="#ComplianceStandard"/>
+    <cysec:hasDescription>Security and privacy controls for service organizations</cysec:hasDescription>
+  </owl:NamedIndividual>
+
+  <!-- TrainingProgram -->
+  <owl:NamedIndividual rdf:ID="PhishingAwareness">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#Phishing"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="RansomwareTraining">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#Ransomware"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SecureCoding">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#SQLInjection"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="IncidentResponseTraining">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#DDoS"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="GeneralCyberAwareness">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#SocialEngineeringThreat"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:ID="SocialEngineeringDefense">
+    <rdf:type rdf:resource="#TrainingProgram"/>
+    <cysec:trainsFor rdf:resource="#SocialEngineeringThreat"/>
+  </owl:NamedIndividual>
+</rdf:RDF>
